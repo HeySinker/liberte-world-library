@@ -10033,7 +10033,7 @@
       if (!next || !next.classList.contains('copy-tooltip')) {
         var tip = document.createElement('span');
         tip.className = 'copy-tooltip';
-        tip.textContent = '   تم نسخ العنوان !  ';
+        tip.textContent = '         تم نسخ العنوان !        ';
         elem.parentNode.insertBefore(tip, elem.nextSibling);
       }
 
@@ -10042,7 +10042,7 @@
       if (status) status.textContent = 'Address copied to clipboard';
 
       setTimeout(function () {
-        elem.classList.remove('   تم نسخ العنوان !  ');
+        elem.classList.remove('         تم نسخ العنوان !        ');
         if (status) status.textContent = '';
         // نترك tooltip لكن بإمكانك حذفه لو أردت:
         var t = elem.nextElementSibling;
@@ -10103,6 +10103,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+
 
 
 
