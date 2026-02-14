@@ -6,53 +6,99 @@
     <title>مكتبة العالم الحرّ</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230a0e14' stroke='%2300ff00' stroke-width='2'/%3E%3Cpath d='M35 45 Q35 35 50 35 Q65 35 65 45' fill='none' stroke='%2300ff00' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%2300ff00'/%3E%3Ccircle cx='60' cy='45' r='3' fill='%2300ff00'/%3E%3Cpath d='M30 60 L70 60' stroke='%2300ff00' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M50 25 L50 15 M40 28 L35 20 M60 28 L65 20' stroke='%2300ff00' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M25 70 Q50 80 75 70' fill='none' stroke='%2300ff00' stroke-width='2'/%3E%3C/svg%3E">
     <style>
-        /* نفس الستايل الخاص بك تماماً */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Courier New', 'Consolas', monospace; background: #0a0e14; min-height: 100vh; padding: 20px; direction: rtl; color: #00ff00; }
         .container { max-width: 1400px; margin: 0 auto; background: #1a1f2e; border-radius: 8px; padding: 40px; box-shadow: 0 0 40px rgba(0, 255, 0, 0.1); border: 1px solid #2a3f5f; }
+        
         .header { text-align: center; margin-bottom: 50px; padding-bottom: 30px; border-bottom: 2px solid #00ff00; }
         .header h1 { font-size: 2.8em; color: #00ff00; margin-bottom: 10px; font-weight: 700; text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
         .header p { color: #7f8c8d; font-size: 1.2em; }
+
+        /* تنسيق عداد الكتب */
+        .stats-container {
+            margin-top: 15px;
+            display: inline-block;
+            padding: 5px 20px;
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid #00ff00;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.1);
+        }
+
         .search-box { max-width: 600px; margin: 30px auto 0; position: relative; }
         .search-box input { width: 100%; padding: 15px 50px 15px 20px; border: 2px solid #2a3f5f; border-radius: 4px; font-size: 1em; background: #0d1117; color: #00ff00; font-family: 'Courier New', monospace; transition: all 0.3s; }
         .search-box input:focus { outline: none; border-color: #00ff00; box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
-        .search-box input::placeholder { color: #4a5568; }
         .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #7f8c8d; }
         
-        /* Grid Layout */
-        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; min-height: 200px; }
-        
-        .book-card { background: #0d1117; border-radius: 4px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; border: 1px solid #2a3f5f; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; animation: fadeIn 0.5s ease; }
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .book-card { background: #0d1117; border-radius: 4px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; border: 1px solid #2a3f5f; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; animation: fadeIn 0.4s ease; }
         .book-card:hover { transform: translateY(-8px); box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); border-color: #00ff00; }
         
-        .subfolder-badge { position: absolute; top: 10px; left: 10px; background: #0099ff; color: #0a0e14; padding: 4px 10px; border-radius: 3px; font-size: 0.75em; font-weight: 600; box-shadow: 0 0 10px rgba(0, 153, 255, 0.5); max-width: 80%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .subfolder-badge { position: absolute; top: 10px; left: 10px; background: #0099ff; color: #0a0e14; padding: 4px 10px; border-radius: 3px; font-size: 0.75em; font-weight: 600; box-shadow: 0 0 10px rgba(0, 153, 255, 0.5); max-width: 85%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
         .book-icon { width: 80px; height: 80px; background: #1a1f2e; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: #00ff00; border: 2px solid #2a3f5f; }
         .book-icon svg { width: 45px; height: 45px; }
         
         .book-title { font-size: 1.1em; color: #00ff00; margin-bottom: 10px; line-height: 1.4; font-weight: 600; min-height: 50px; display: flex; align-items: center; justify-content: center; word-break: break-word; }
         
-        .book-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; color: #7f8c8d; font-size: 0.9em; margin-bottom: 20px; width: 100%; }
-        .book-size { background: #1a1f2e; padding: 4px 10px; border-radius: 3px; border: 1px solid #2a3f5f; white-space: nowrap; }
+        .book-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; color: #7f8c8d; font-size: 0.9em; margin-bottom: 20px; }
+        .book-size { background: #1a1f2e; padding: 4px 10px; border-radius: 3px; border: 1px solid #2a3f5f; }
         
         .download-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #0d1117; color: #00ff00; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s; width: 100%; margin-top: auto; border: 2px solid #00ff00; }
         .download-btn:hover { background: #00ff00; color: #0a0e14; box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); }
-        .download-btn svg { width: 20px; height: 20px; }
         
+        .onion-link {
+    margin-top: 15px;
+    padding: 12px;
+    background: #0d1117;
+    border: 1px solid #2a3f5f;
+    border-radius: 4px;
+    font-size: 0.85em;
+    text-align: center;
+    /* حل مشكلة تداخل النصوص */
+    word-wrap: break-word; 
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+.onion-link p {
+    display: flex;
+    flex-direction: column; /* العناصر تحت بعضها في الهواتف */
+    gap: 8px;
+    align-items: center;
+}
+
+/* في الشاشات الكبيرة نجعلها بجانب بعضها */
+@media (min-width: 768px) {
+    .onion-link p {
+        flex-direction: row; 
+        justify-content: center;
+    }
+}
+
+.copy-link {
+    cursor: pointer;
+    color: #00ff00;
+    background: rgba(0, 255, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px dashed #00ff00;
+    /* تفعيل كسر النص داخل العناوين الطويلة */
+    display: inline-block;
+    max-width: 100%;
+}
+        .copy-link { cursor: pointer; text-decoration: underline; color: #00ff00; }
+
         .loading-text, .no-results { text-align: center; width: 100%; padding: 40px; color: #7f8c8d; font-size: 1.2em; grid-column: 1 / -1; }
-        
-        .footer { text-align: center; padding-top: 30px; margin-top: 50px; border-top: 1px solid #2a3f5f; color: #7f8c8d; }
-        .onion-link { margin-top: 15px; padding: 10px; background: #0d1117; border: 1px solid #2a3f5f; border-radius: 4px; font-size: 0.85em; }
-        .onion-link a { color: #ff00ff; text-decoration: none; font-family: 'Courier New', monospace; }
-        .onion-link a:hover { color: #00ff00; text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); }
-        .copy-link { cursor: pointer; text-decoration: underline; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         @media (max-width: 768px) {
-            body { padding: 10px; }
-            .container { padding: 20px 15px; }
-            .header h1 { font-size: 1.5em; }
+            .header h1 { font-size: 1.8em; }
+            .container { padding: 20px 10px; }
             .books-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -62,140 +108,153 @@
 <div class="container">
     <header class="header">
         <h1>📚 مكتبة العالم الحرّ</h1>
-        <p>مجموعة من الكتب النادرة و القيّمة</p>
+        <p>أرشيف الكتب النادرة و القيّمة</p>
+        
+        <div class="stats-container" id="statsCounter">جاري فحص المجلدات...</div>
         
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="ابحث عن كتاب أو مجلد..." autocomplete="off">
+            <input type="text" id="searchInput" placeholder="ابحث عن اسم الكتاب أو التصنيف..." autocomplete="off">
             <span class="search-icon">🔍</span>
         </div>
 
-        <div class="onion-link">
-             <p>🧅 الرابط الاحتياطي: <a href="http://7xk4m9p2qw8n5vt3bg6hj1rz0cd8efy4ua9slx2qi7nwmkopdvh3elad.onion/library">http://7xk4m9p2qw8n5vt3bg6hj1rz0cd8efy4ua9slx2qi7nwmkopdvh3elad.onion</a></p>
-        </div>
-        
-        <div class="onion-link">
-             <p>Donate SOL: <a href="#" class="copy-link" title="Click to copy" onclick="copyToClipboard('SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F')">SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F</a></p>
-        </div>
-         <div class="onion-link">
-             <p>Donate BTC: <a href="#" class="copy-link" title="Click to copy" onclick="copyToClipboard('1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN')">1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN</a></p>
-        </div>
+<div class="onion-link">
+    <p>
+        <span>🧅 الرابط الاحتياطي:</span>
+        <a href="http://7xk4m9p2qw8n5vt3bg6hj1rz0cd8efy4ua9slx2qi7nwmkopdvh3elad.onion/library" style="color: purble;">Onion Link</a>
+    </p>
+</div>
+
+<div class="onion-link">
+    <p>
+        <span>Donate SOL:</span>
+        <span class="copy-link" onclick="copyToClipboard('SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F')">SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F</span>
+    </p>
+</div>
+
+<div class="onion-link">
+    <p>
+        <span>Donate BTC:</span>
+        <span class="copy-link" onclick="copyToClipboard('1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN')">1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN</span>
+    </p>
+</div>
     </header>
 
     <main>
         <div id="booksGrid" class="books-grid">
-            <div class="loading-text">جاري تحميل المكتبة المركزية...</div>
+            <div class="loading-text">جاري استدعاء البيانات من السيرفر المركزي...</div>
         </div>
-        <div id="loadMoreTrigger" style="height: 50px; margin-top: 20px;"></div>
+        <div id="loadMoreTrigger" style="height: 20px;"></div>
     </main>
 
-    <footer class="footer">
-        <p>&copy; 2025 مكتبة العالم الحرّ - جميع الحقوق محفوظة للمعرفة.</p>
+    <footer style="text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid #2a3f5f; color: #4a5568;">
+        <p>&copy; 2026 مكتبة العالم الحرّ - المعرفة للجميع</p>
     </footer>
 </div>
 
 <script>
-    // الإعدادات الخاصة بك
     const R2_BASE_URL = "https://pub-50bb0a7170f24a0fb33dc91b892ffecc.r2.dev/";
+    const JSON_URL = "https://lib.psychicalbeacon.com/books_db.json";
     
     let allBooks = [];       
     let displayedBooks = []; 
-    let itemsToShow = 50;    
-    let isLoading = false;
+    let itemsToShow = 40;    
     
     const booksGrid = document.getElementById('booksGrid');
     const searchInput = document.getElementById('searchInput');
+    const statsCounter = document.getElementById('statsCounter');
 
-    // جلب البيانات من ملف الـ JSON
-    fetch('https://lib.psychicalbeacon.com/books_db.json')
-        .then(response => {
-            if (!response.ok) throw new Error('فشل تحميل ملف البيانات');
-            return response.json();
-        })
-        .then(data => {
-            allBooks = data;
-            displayedBooks = data;
+    // 1. جلب البيانات
+    async function init() {
+        try {
+            const response = await fetch(JSON_URL);
+            if (!response.ok) throw new Error('فشل التحميل');
+            allBooks = await response.json();
+            displayedBooks = allBooks;
+            
+            // تحديث العداد
+            updateCounter(allBooks.length);
+            
             booksGrid.innerHTML = '';
             renderBooks();
             setupInfiniteScroll();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            booksGrid.innerHTML = `<div class="no-results">❌ خطأ في الاتصال: ${error.message}</div>`;
-        });
-
-    function renderBooks(append = false) {
-        if (!append) {
-            booksGrid.innerHTML = '';
-            window.scrollTo(0, 0);
+        } catch (error) {
+            booksGrid.innerHTML = `<div class="no-results">❌ فشل تحميل المكتبة: ${error.message}</div>`;
         }
+    }
 
+    // 2. دالة رسم الكتب
+    function renderBooks(append = false) {
+        if (!append) booksGrid.innerHTML = '';
+        
         const currentCount = append ? booksGrid.children.length : 0;
         const nextBatch = displayedBooks.slice(currentCount, currentCount + itemsToShow);
 
         if (nextBatch.length === 0 && !append) {
-            booksGrid.innerHTML = '<div class="no-results">لم يتم العثور على نتائج.</div>';
+            booksGrid.innerHTML = '<div class="no-results">لم يتم العثور على أي مجلدات مطابقة.</div>';
             return;
         }
 
         const fragment = document.createDocumentFragment();
         nextBatch.forEach(book => {
-            // معالجة الرابط: التأكد من أنه يؤدي إلى R2 وليس إلى جهازك
-            // سنأخذ فقط اسم الملف والمسار النسبي من JSON ونضيفه لـ R2_BASE_URL
-            const cleanPath = book.p.includes('/') ? book.p.split('/').pop() : book.p;
-            const finalDownloadUrl = R2_BASE_URL + book.p;
+            // معالجة الروابط التي قد تحتوي على مسارات محلية قديمة
+            let path = book.p;
+            if (path.includes('file:///')) {
+                path = path.split('/').pop(); // استخراج اسم الملف فقط
+            }
 
             const card = document.createElement('div');
             card.className = 'book-card';
             card.innerHTML = `
                 <div class="book-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 18H6a1 1 0 0 0 0 2h15v2H6a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2h16v16zM5 16.05c.16-.03.33-.05.5-.05H19V4H5v12.05zM16 9H8V7h8v2zm0 4H8v-2h8v2z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 18H6a1 1 0 0 0 0 2h15v2H6a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2h16v16zM5 16.05c.16-.03.33-.05.5-.05H19V4H5v12.05zM16 9H8V7h8v2zm0 4H8v-2h8v2z"/></svg>
                 </div>
-                <span class="subfolder-badge" title="${book.f}">${book.f}</span>
+                <span class="subfolder-badge">${book.f}</span>
                 <h3 class="book-title">${book.t}</h3>
-                <div class="book-meta">
-                    <span class="book-size">${book.s}</span>
-                </div>
-                <a class="download-btn" href="${finalDownloadUrl}" download target="_blank">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M13 10h5l-6 6-6-6h5V3h2v7zm-9 9h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7z"/>
-                    </svg>
-                    Download
-                </a>
+                <div class="book-meta"><span class="book-size">${book.s}</span></div>
+                <a class="download-btn" href="${R2_BASE_URL + path}" download target="_blank">Download Book</a>
             `;
             fragment.appendChild(card);
         });
-
         booksGrid.appendChild(fragment);
     }
 
-    // البحث الفوري
+    // 3. البحث الفوري وتحديث العداد
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
-        displayedBooks = allBooks.filter(book => 
-            book.t.toLowerCase().includes(query) || 
-            book.f.toLowerCase().includes(query)
+        displayedBooks = allBooks.filter(b => 
+            b.t.toLowerCase().includes(query) || b.f.toLowerCase().includes(query)
         );
+        
+        // تحديث النص في العداد
+        if (query === "") {
+            updateCounter(allBooks.length);
+        } else {
+            statsCounter.innerText = `تم العثور على: ${displayedBooks.length} كتاب`;
+        }
+        
         renderBooks(false);
     });
 
-    // التمرير اللانهائي
+    // 4. تحديث العداد
+    function updateCounter(count) {
+        statsCounter.innerText = `إجمالي الكتب المضافة حديثاً: ${count.toLocaleString()}`;
+    }
+
+    // 5. التمرير اللانهائي
     function setupInfiniteScroll() {
-        const trigger = document.getElementById('loadMoreTrigger');
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && booksGrid.children.length < displayedBooks.length) {
                 renderBooks(true);
             }
-        });
-        observer.observe(trigger);
+        }, { rootMargin: '200px' });
+        observer.observe(document.getElementById('loadMoreTrigger'));
     }
 
     function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert("تم النسخ: " + text);
-        });
+        navigator.clipboard.writeText(text).then(() => alert("تم النسخ بنجاح!"));
     }
+
+    init();
 </script>
 
 </body>
