@@ -32,6 +32,102 @@
         .search-box input { width: 100%; padding: 15px 50px 15px 20px; border: 2px solid #2a3f5f; border-radius: 4px; font-size: 1em; background: #0d1117; color: #00ff00; font-family: 'Courier New', monospace; transition: all 0.3s; }
         .search-box input:focus { outline: none; border-color: #00ff00; box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
         .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #7f8c8d; }
+
+        /* شريط التنقل بين المجلدات */
+        .breadcrumb-container {
+            margin: 20px 0 30px 0;
+            padding: 15px;
+            background: #0d1117;
+            border: 1px solid #2a3f5f;
+            border-radius: 4px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            min-height: 45px;
+        }
+
+        .breadcrumb-item {
+            background: #1a1f2e;
+            color: #00ff00;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: 1px solid #2a3f5f;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .breadcrumb-item:hover {
+            background: #00ff00;
+            color: #0a0e14;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            border-color: #00ff00;
+        }
+
+        .breadcrumb-item.active {
+            background: #00ff00;
+            color: #0a0e14;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
+
+        .breadcrumb-separator {
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+
+        /* عنوان الفئة الحالية */
+        .category-title {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 255, 0, 0.05);
+            border-left: 4px solid #00ff00;
+            border-radius: 4px;
+        }
+
+        .category-title h2 {
+            color: #00ff00;
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .category-title p {
+            color: #7f8c8d;
+            margin: 5px 0 0 0;
+            font-size: 0.95em;
+        }
+
+        .sort-btn {
+            background: #1a1f2e;
+            color: #00ff00;
+            padding: 10px 16px;
+            border: 2px solid #00ff00;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .sort-btn:hover {
+            background: #00ff00;
+            color: #0a0e14;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .sort-btn.active {
+            background: #00ff00;
+            color: #0a0e14;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
         
         .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
         .book-card { background: #0d1117; border-radius: 4px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; border: 1px solid #2a3f5f; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; animation: fadeIn 0.4s ease; }
@@ -51,46 +147,42 @@
         .download-btn:hover { background: #00ff00; color: #0a0e14; box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); }
         
         .onion-link {
-    margin-top: 15px;
-    padding: 12px;
-    background: #0d1117;
-    border: 1px solid #2a3f5f;
-    border-radius: 4px;
-    font-size: 0.85em;
-    text-align: center;
-    /* حل مشكلة تداخل النصوص */
-    word-wrap: break-word; 
-    word-break: break-all;
-    overflow-wrap: break-word;
-}
+            margin-top: 15px;
+            padding: 12px;
+            background: #0d1117;
+            border: 1px solid #2a3f5f;
+            border-radius: 4px;
+            font-size: 0.85em;
+            text-align: center;
+            word-wrap: break-word; 
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
 
-.onion-link p {
-    display: flex;
-    flex-direction: column; /* العناصر تحت بعضها في الهواتف */
-    gap: 8px;
-    align-items: center;
-}
+        .onion-link p {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
 
-/* في الشاشات الكبيرة نجعلها بجانب بعضها */
-@media (min-width: 768px) {
-    .onion-link p {
-        flex-direction: row; 
-        justify-content: center;
-    }
-}
+        @media (min-width: 768px) {
+            .onion-link p {
+                flex-direction: row; 
+                justify-content: center;
+            }
+        }
 
-.copy-link {
-    cursor: pointer;
-    color: #00ff00;
-    background: rgba(0, 255, 0, 0.05);
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px dashed #00ff00;
-    /* تفعيل كسر النص داخل العناوين الطويلة */
-    display: inline-block;
-    max-width: 100%;
-}
-        .copy-link { cursor: pointer; text-decoration: underline; color: #00ff00; }
+        .copy-link {
+            cursor: pointer;
+            color: #00ff00;
+            background: rgba(0, 255, 0, 0.05);
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px dashed #00ff00;
+            display: inline-block;
+            max-width: 100%;
+        }
 
         .loading-text, .no-results { text-align: center; width: 100%; padding: 40px; color: #7f8c8d; font-size: 1.2em; grid-column: 1 / -1; }
 
@@ -100,6 +192,7 @@
             .header h1 { font-size: 1.8em; }
             .container { padding: 20px 10px; }
             .books-grid { grid-template-columns: 1fr; }
+            .breadcrumb-item { font-size: 0.85em; padding: 6px 12px; }
         }
     </style>
 </head>
@@ -117,27 +210,43 @@
             <span class="search-icon">🔍</span>
         </div>
 
-<div class="onion-link">
-    <p>
-        <span>🧅 الرابط الاحتياطي:</span>
-        <a href="http://7xk4m9p2qw8n5vt3bg6hj1rz0cd8efy4ua9slx2qi7nwmkopdvh3elad.onion/library" style="color: purble;">Onion Link</a>
-    </p>
-</div>
+        <div class="onion-link">
+            <p>
+                <span>🧅 الرابط الاحتياطي:</span>
+                <a href="http://7xk4m9p2qw8n5vt3bg6hj1rz0cd8efy4ua9slx2qi7nwmkopdvh3elad.onion/library" style="color: purble;">Onion Link</a>
+            </p>
+        </div>
 
-<div class="onion-link">
-    <p>
-        <span>Donate SOL:</span>
-        <span class="copy-link" onclick="copyToClipboard('SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F')">SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F</span>
-    </p>
-</div>
+        <div class="onion-link">
+            <p>
+                <span>Donate SOL:</span>
+                <span class="copy-link" onclick="copyToClipboard('SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F')">SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F</span>
+            </p>
+        </div>
 
-<div class="onion-link">
-    <p>
-        <span>Donate BTC:</span>
-        <span class="copy-link" onclick="copyToClipboard('1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN')">1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN</span>
-    </p>
-</div>
+        <div class="onion-link">
+            <p>
+                <span>Donate BTC:</span>
+                <span class="copy-link" onclick="copyToClipboard('1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN')">1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN</span>
+            </p>
+        </div>
     </header>
+
+    <!-- شريط التنقل بين المجلدات -->
+    <div class="breadcrumb-container">
+        <div class="breadcrumb" id="breadcrumb"></div>
+    </div>
+
+    <!-- عنوان الفئة الحالية مع زر الترتيب -->
+    <div class="category-title" id="categoryTitle" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h2 id="categoryName"></h2>
+                <p id="categoryCount"></p>
+            </div>
+            <button id="sortBtn" class="sort-btn" onclick="toggleSort()">⬇️ ترتيب أبجدي</button>
+        </div>
+    </div>
 
     <main>
         <div id="booksGrid" class="books-grid">
@@ -157,28 +266,162 @@
     
     let allBooks = [];       
     let displayedBooks = []; 
-    let itemsToShow = 40;    
+    let itemsToShow = 40;
+    let currentCategory = null;
+    let categories = {};
+    let isSorted = false;
     
     const booksGrid = document.getElementById('booksGrid');
     const searchInput = document.getElementById('searchInput');
     const statsCounter = document.getElementById('statsCounter');
+    const breadcrumb = document.getElementById('breadcrumb');
+    const categoryTitle = document.getElementById('categoryTitle');
 
-    // 1. جلب البيانات
+    // دالة الترتيب الأبجدي (عربي أولاً ثم إنجليزي)
+    function sortByAlphabet(books) {
+        return books.sort((a, b) => {
+            const titleA = a.t || '';
+            const titleB = b.t || '';
+            
+            // استخدام localeCompare للترتيب الصحيح
+            return titleA.localeCompare(titleB, ['ar', 'en'], { numeric: true });
+        });
+    }
+
+    // دالة تبديل الترتيب
+    function toggleSort() {
+        isSorted = !isSorted;
+        const sortBtn = document.getElementById('sortBtn');
+        
+        if (isSorted) {
+            displayedBooks = sortByAlphabet([...displayedBooks]);
+            sortBtn.classList.add('active');
+            sortBtn.textContent = '⬆️ الترتيب الأصلي';
+        } else {
+            // إعادة الترتيب الأصلي
+            if (currentCategory !== null) {
+                displayedBooks = categories[currentCategory] || [];
+            } else {
+                // في حالة البحث
+                if (searchInput.value !== "") {
+                    displayedBooks = allBooks.filter(b => 
+                        b.t.toLowerCase().includes(searchInput.value.toLowerCase()) || 
+                        b.f.toLowerCase().includes(searchInput.value.toLowerCase())
+                    );
+                } else {
+                    showAllCategories();
+                    return;
+                }
+            }
+            sortBtn.classList.remove('active');
+            sortBtn.textContent = '⬇️ ترتيب أبجدي';
+        }
+        
+        booksGrid.innerHTML = '';
+        renderBooks();
+    }
+
+    // 1. جلب البيانات وتنظيمها
     async function init() {
         try {
             const response = await fetch(JSON_URL);
             if (!response.ok) throw new Error('فشل التحميل');
             allBooks = await response.json();
-            displayedBooks = allBooks;
             
-            // تحديث العداد
+            // تنظيم الكتب حسب الفئات
+            organizeBooks();
+            
+            // عرض جميع الفئات في البداية
+            showAllCategories();
+            
             updateCounter(allBooks.length);
-            
-            booksGrid.innerHTML = '';
-            renderBooks();
             setupInfiniteScroll();
         } catch (error) {
             booksGrid.innerHTML = `<div class="no-results">❌ فشل تحميل المكتبة: ${error.message}</div>`;
+        }
+    }
+
+    // تنظيم الكتب حسب الفئات
+    function organizeBooks() {
+        categories = {};
+        allBooks.forEach(book => {
+            const category = book.f;
+            if (!categories[category]) {
+                categories[category] = [];
+            }
+            categories[category].push(book);
+        });
+    }
+
+    // عرض جميع الفئات
+    function showAllCategories() {
+        currentCategory = null;
+        displayedBooks = [];
+        
+        // إنشاء كائنات "فئة" لعرضها كبطاقات
+        Object.keys(categories).forEach(categoryName => {
+            displayedBooks.push({
+                t: categoryName,
+                f: 'مجلد',
+                s: `${categories[categoryName].length} كتاب`,
+                isCategory: true,
+                categoryName: categoryName
+            });
+        });
+        
+        updateBreadcrumb();
+        categoryTitle.style.display = 'none';
+        updateCounter(displayedBooks.length);
+        booksGrid.innerHTML = '';
+        renderBooks();
+    }
+
+    // عرض محتويات فئة معينة
+    function showCategory(categoryName) {
+        currentCategory = categoryName;
+        displayedBooks = categories[categoryName] || [];
+        isSorted = false;
+        
+        const sortBtn = document.getElementById('sortBtn');
+        if (sortBtn) {
+            sortBtn.classList.remove('active');
+            sortBtn.textContent = '⬇️ ترتيب أبجدي';
+        }
+        
+        updateBreadcrumb();
+        
+        // عرض عنوان الفئة
+        categoryTitle.style.display = 'block';
+        document.getElementById('categoryName').textContent = categoryName;
+        document.getElementById('categoryCount').textContent = `${displayedBooks.length} كتاب`;
+        
+        updateCounter(displayedBooks.length);
+        booksGrid.innerHTML = '';
+        renderBooks();
+    }
+
+    // تحديث شريط التنقل
+    function updateBreadcrumb() {
+        breadcrumb.innerHTML = '';
+        
+        // زر الرجوع للرئيسية
+        const homeBtn = document.createElement('span');
+        homeBtn.className = 'breadcrumb-item' + (currentCategory === null ? ' active' : '');
+        homeBtn.textContent = '📚 الرئيسية';
+        homeBtn.style.cursor = 'pointer';
+        homeBtn.onclick = showAllCategories;
+        breadcrumb.appendChild(homeBtn);
+        
+        if (currentCategory !== null) {
+            const separator = document.createElement('span');
+            separator.className = 'breadcrumb-separator';
+            separator.textContent = ' / ';
+            breadcrumb.appendChild(separator);
+            
+            const categoryBtn = document.createElement('span');
+            categoryBtn.className = 'breadcrumb-item active';
+            categoryBtn.textContent = currentCategory;
+            breadcrumb.appendChild(categoryBtn);
         }
     }
 
@@ -196,48 +439,82 @@
 
         const fragment = document.createDocumentFragment();
         nextBatch.forEach(book => {
-            // معالجة الروابط التي قد تحتوي على مسارات محلية قديمة
-            let path = book.p;
-            if (path.includes('file:///')) {
-                path = path.split('/').pop(); // استخراج اسم الملف فقط
-            }
-
             const card = document.createElement('div');
             card.className = 'book-card';
-            card.innerHTML = `
-                <div class="book-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 18H6a1 1 0 0 0 0 2h15v2H6a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2h16v16zM5 16.05c.16-.03.33-.05.5-.05H19V4H5v12.05zM16 9H8V7h8v2zm0 4H8v-2h8v2z"/></svg>
-                </div>
-                <span class="subfolder-badge">${book.f}</span>
-                <h3 class="book-title">${book.t}</h3>
-                <div class="book-meta"><span class="book-size">${book.s}</span></div>
-                <a class="download-btn" href="${R2_BASE_URL + path}" download target="_blank">Download Book</a>
-            `;
+            
+            if (book.isCategory) {
+                // بطاقة الفئة
+                card.innerHTML = `
+                    <div class="book-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10z"/></svg>
+                    </div>
+                    <h3 class="book-title">${book.t}</h3>
+                    <div class="book-meta"><span class="book-size">${book.s}</span></div>
+                    <button class="download-btn" onclick="selectCategory('${book.categoryName}')">عرض الكتب</button>
+                `;
+            } else {
+                // بطاقة الكتاب
+                let path = book.p;
+                if (path.includes('file:///')) {
+                    path = path.split('/').pop();
+                }
+                
+                card.innerHTML = `
+                    <div class="book-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 18H6a1 1 0 0 0 0 2h15v2H6a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2h16v16zM5 16.05c.16-.03.33-.05.5-.05H19V4H5v12.05zM16 9H8V7h8v2zm0 4H8v-2h8v2z"/></svg>
+                    </div>
+                    <span class="subfolder-badge">${book.f}</span>
+                    <h3 class="book-title">${book.t}</h3>
+                    <div class="book-meta"><span class="book-size">${book.s}</span></div>
+                    <a class="download-btn" href="${R2_BASE_URL + path}" download target="_blank">تحميل الكتاب</a>
+                `;
+            }
             fragment.appendChild(card);
         });
         booksGrid.appendChild(fragment);
     }
 
-    // 3. البحث الفوري وتحديث العداد
+    // دالة اختيار فئة
+    function selectCategory(categoryName) {
+        showCategory(categoryName);
+    }
+
+    // 3. البحث الفوري
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
+        isSorted = false;
+        
+        const sortBtn = document.getElementById('sortBtn');
+        if (sortBtn) {
+            sortBtn.classList.remove('active');
+            sortBtn.textContent = '⬇️ ترتيب أبجدي';
+        }
+        
+        if (query === "") {
+            // إعادة عرض البيانات الأصلية
+            if (currentCategory === null) {
+                showAllCategories();
+            } else {
+                showCategory(currentCategory);
+            }
+            return;
+        }
+
+        // البحث في كل الكتب
         displayedBooks = allBooks.filter(b => 
             b.t.toLowerCase().includes(query) || b.f.toLowerCase().includes(query)
         );
         
-        // تحديث النص في العداد
-        if (query === "") {
-            updateCounter(allBooks.length);
-        } else {
-            statsCounter.innerText = `تم العثور على: ${displayedBooks.length} كتاب`;
-        }
-        
+        statsCounter.innerText = `تم العثور على: ${displayedBooks.length} كتاب`;
+        categoryTitle.style.display = 'none';
         renderBooks(false);
     });
 
     // 4. تحديث العداد
     function updateCounter(count) {
-        statsCounter.innerText = `Smart Book Counter: ${count.toLocaleString()}`;
+        if (searchInput.value === "") {
+            statsCounter.innerText = `Smart Book Counter: ${count.toLocaleString()}`;
+        }
     }
 
     // 5. التمرير اللانهائي
@@ -259,4 +536,3 @@
 
 </body>
 </html>
-
