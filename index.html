@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مكتبة العالم الحرّ</title>
+    <title>Bibliotheca Mundi Liberi</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230a0e14' stroke='%2300ff00' stroke-width='2'/%3E%3Cpath d='M35 45 Q35 35 50 35 Q65 35 65 45' fill='none' stroke='%2300ff00' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%2300ff00'/%3E%3Ccircle cx='60' cy='45' r='3' fill='%2300ff00'/%3E%3Cpath d='M30 60 L70 60' stroke='%2300ff00' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M50 25 L50 15 M40 28 L35 20 M60 28 L65 20' stroke='%2300ff00' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M25 70 Q50 80 75 70' fill='none' stroke='%2300ff00' stroke-width='2'/%3E%3C/svg%3E">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Courier New', 'Consolas', monospace; background: #0a0e14; min-height: 100vh; padding: 20px; direction: rtl; color: #00ff00; }
+        body { font-family: 'Courier New', 'Consolas', monospace; background: #0a0e14; min-height: 100vh; padding: 20px; direction: ltr; color: #00ff00; }
         .container { max-width: 1400px; margin: 0 auto; background: #1a1f2e; border-radius: 8px; padding: 40px; box-shadow: 0 0 40px rgba(0, 255, 0, 0.1); border: 1px solid #2a3f5f; }
         
         .header { text-align: center; margin-bottom: 50px; padding-bottom: 30px; border-bottom: 2px solid #00ff00; }
         .header h1 { font-size: 2.8em; color: #00ff00; margin-bottom: 10px; font-weight: 700; text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
         .header p { color: #7f8c8d; font-size: 1.2em; }
+        .header .subtitle { color: #7f8c8d; font-size: 0.9em; margin-top: 5px; font-style: italic; }
 
-        /* تنسيق عداد الكتب */
         .stats-container {
             margin-top: 15px;
             display: inline-block;
-            padding: 5px 20px;
+            padding: 8px 20px;
             background: rgba(0, 255, 0, 0.05);
             border: 1px solid #00ff00;
             border-radius: 20px;
@@ -31,9 +31,8 @@
         .search-box { max-width: 600px; margin: 30px auto 0; position: relative; }
         .search-box input { width: 100%; padding: 15px 50px 15px 20px; border: 2px solid #2a3f5f; border-radius: 4px; font-size: 1em; background: #0d1117; color: #00ff00; font-family: 'Courier New', monospace; transition: all 0.3s; }
         .search-box input:focus { outline: none; border-color: #00ff00; box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
-        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #7f8c8d; }
+        .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #7f8c8d; }
 
-        /* شريط التنقل بين المجلدات */
         .breadcrumb-container {
             margin: 20px 0 30px 0;
             padding: 15px;
@@ -83,7 +82,6 @@
             font-weight: bold;
         }
 
-        /* عنوان الفئة الحالية */
         .category-title {
             margin-bottom: 20px;
             padding: 15px;
@@ -108,7 +106,7 @@
         .book-card { background: #0d1117; border-radius: 4px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; border: 1px solid #2a3f5f; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; animation: fadeIn 0.4s ease; }
         .book-card:hover { transform: translateY(-8px); box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); border-color: #00ff00; }
         
-        .subfolder-badge { position: absolute; top: 10px; left: 10px; background: #0099ff; color: #0a0e14; padding: 4px 10px; border-radius: 3px; font-size: 0.75em; font-weight: 600; box-shadow: 0 0 10px rgba(0, 153, 255, 0.5); max-width: 85%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .subfolder-badge { position: absolute; top: 10px; right: 10px; background: #0099ff; color: #0a0e14; padding: 4px 10px; border-radius: 3px; font-size: 0.75em; font-weight: 600; box-shadow: 0 0 10px rgba(0, 153, 255, 0.5); max-width: 85%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
         .book-icon { width: 80px; height: 80px; background: #1a1f2e; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: #00ff00; border: 2px solid #2a3f5f; }
         .book-icon svg { width: 45px; height: 45px; }
@@ -121,7 +119,7 @@
         .download-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #0d1117; color: #00ff00; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s; width: 100%; margin-top: auto; border: 2px solid #00ff00; cursor: pointer; }
         .download-btn:hover { background: #00ff00; color: #0a0e14; box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); }
         
-        .onion-link {
+        .link-section {
             margin-top: 15px;
             padding: 12px;
             background: #0d1117;
@@ -134,7 +132,7 @@
             overflow-wrap: break-word;
         }
 
-        .onion-link p {
+        .link-section p {
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -142,7 +140,7 @@
         }
 
         @media (min-width: 768px) {
-            .onion-link p {
+            .link-section p {
                 flex-direction: row; 
                 justify-content: center;
             }
@@ -175,44 +173,43 @@
 
 <div class="container">
     <header class="header">
-        <h1>📚 مكتبة العالم الحرّ</h1>
-        <p>أرشيف الكتب النادرة و القيّمة</p>
+        <h1>Bibliotheca Mundi Liberi</h1>
+        <p>مكتبة العالم الحرّ</p>
+        <p class="subtitle">The Archive of Rare & Precious Books</p>
         
-        <div class="stats-container" id="statsCounter">جاري فحص المجلدات...</div>
+        <div class="stats-container" id="statsCounter">Scanning collections...</div>
         
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="ابحث عن اسم الكتاب أو التصنيف..." autocomplete="off">
+            <input type="text" id="searchInput" placeholder="Search by book title or category..." autocomplete="off">
             <span class="search-icon">🔍</span>
         </div>
 
-        <div class="onion-link">
+        <div class="link-section">
             <p>
-                <span>🧅 الرابط الاحتياطي:</span>
-                <a href="http://7xk4m9p2qw8n5vt3bg6hj1rz0cd8efy4ua9slx2qi7nwmkopdvh3elad.onion/library" style="color: purble;">Onion Link</a>
+                <span>🧅 Backup Access:</span>
+                <a href="http://7xk4m9p2qw8n5vt3bg6hj1rz0cd8efy4ua9slx2qi7nwmkopdvh3elad.onion/library" style="color: #00ff00;">Tor Mirror</a>
             </p>
         </div>
 
-        <div class="onion-link">
+        <div class="link-section">
             <p>
-                <span>Donate SOL:</span>
+                <span>Support (SOL):</span>
                 <span class="copy-link" id="copySolBtn">SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F</span>
             </p>
         </div>
 
-        <div class="onion-link">
+        <div class="link-section">
             <p>
-                <span>Donate BTC:</span>
+                <span>Support (BTC):</span>
                 <span class="copy-link" id="copyBtcBtn">1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN</span>
             </p>
         </div>
     </header>
 
-    <!-- شريط التنقل بين المجلدات -->
     <div class="breadcrumb-container">
         <div class="breadcrumb" id="breadcrumb"></div>
     </div>
 
-    <!-- عنوان الفئة الحالية -->
     <div class="category-title" id="categoryTitle" style="display: none;">
         <h2 id="categoryName"></h2>
         <p id="categoryCount"></p>
@@ -220,13 +217,13 @@
 
     <main>
         <div id="booksGrid" class="books-grid">
-            <div class="loading-text">جاري استدعاء البيانات من السيرفر المركزي...</div>
+            <div class="loading-text">Loading collections from central server...</div>
         </div>
         <div id="loadMoreTrigger" style="height: 20px;"></div>
     </main>
 
     <footer style="text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid #2a3f5f; color: #4a5568;">
-        <p>&copy; 2026 مكتبة العالم الحرّ - المعرفة للجميع</p>
+        <p>&copy; 2026 Liber Mundi - Knowledge for All | Scientia est potentia</p>
     </footer>
 </div>
 
@@ -237,8 +234,8 @@
     let allBooks = [];       
     let displayedBooks = []; 
     let itemsToShow = 40;
-    let currentCategory = null;
-    let categories = {};
+    let currentPath = [];
+    let folderStructure = {};
     
     const booksGrid = document.getElementById('booksGrid');
     const searchInput = document.getElementById('searchInput');
@@ -246,190 +243,220 @@
     const breadcrumb = document.getElementById('breadcrumb');
     const categoryTitle = document.getElementById('categoryTitle');
 
-    // دالة الترتيب الأبجدي (عربي أولاً ثم إنجليزي)
+    // Sort alphabetically
     function sortByAlphabet(books) {
         return books.sort((a, b) => {
             const titleA = a.t || '';
             const titleB = b.t || '';
-            
-            // استخدام localeCompare للترتيب الصحيح
-            return titleA.localeCompare(titleB, ['ar', 'en'], { numeric: true });
+            return titleA.localeCompare(titleB, 'en', { numeric: true });
         });
     }
 
-    // 1. جلب البيانات وتنظيمها
-    async function init() {
-        try {
-            const response = await fetch(JSON_URL);
-            if (!response.ok) throw new Error('فشل التحميل');
-            allBooks = await response.json();
-            
-            // ترتيب الكتب أبجدياً من البداية
-            allBooks = sortByAlphabet(allBooks);
-            
-            // تنظيم الكتب حسب الفئات
-            organizeBooks();
-            
-            // عرض جميع الفئات في البداية
-            showAllCategories();
-            
-            updateCounter(allBooks.length);
-            setupInfiniteScroll();
-        } catch (error) {
-            booksGrid.innerHTML = `<div class="no-results">❌ فشل تحميل المكتبة: ${error.message}</div>`;
-        }
-    }
+    // Build hierarchical folder structure
+    function buildFolderStructure(books) {
+        folderStructure = {
+            items: [],
+            folders: {}
+        };
 
-    // تنظيم الكتب حسب الفئات
-    function organizeBooks() {
-        categories = {};
-        allBooks.forEach(book => {
-            const category = book.f;
-            if (!categories[category]) {
-                categories[category] = [];
+        books.forEach(book => {
+            const pathParts = book.f.split('/').filter(p => p.trim());
+
+            if (pathParts.length === 0) {
+                folderStructure.items.push(book);
+                return;
             }
-            categories[category].push(book);
-        });
-        
-        // ترتيب الكتب داخل كل فئة أبجدياً
-        Object.keys(categories).forEach(category => {
-            categories[category] = sortByAlphabet([...categories[category]]);
-        });
-    }
 
-    // عرض جميع الفئات
-    function showAllCategories() {
-        currentCategory = null;
-        displayedBooks = [];
-        
-        // إنشاء كائنات "فئة" لعرضها كبطاقات - مرتبة أبجدياً
-        const sortedCategoryNames = Object.keys(categories).sort((a, b) => 
-            a.localeCompare(b, ['ar', 'en'], { numeric: true })
-        );
-        
-        sortedCategoryNames.forEach(categoryName => {
-            displayedBooks.push({
-                t: categoryName,
-                f: 'مجلد',
-                s: `${categories[categoryName].length} كتاب`,
-                isCategory: true,
-                categoryName: categoryName
+            let current = folderStructure;
+            pathParts.forEach((part, index) => {
+                if (!current.folders[part]) {
+                    current.folders[part] = {
+                        name: part,
+                        items: [],
+                        folders: {}
+                    };
+                }
+                
+                if (index === pathParts.length - 1) {
+                    current.folders[part].items.push(book);
+                }
+                
+                current = current.folders[part];
             });
         });
-        
+
+        sortFolderStructure(folderStructure);
+    }
+
+    function sortFolderStructure(folder) {
+        folder.items = sortByAlphabet(folder.items);
+        Object.values(folder.folders).forEach(subfolder => {
+            sortFolderStructure(subfolder);
+        });
+    }
+
+    // Calculate total book count including subfolders
+    function getTotalBookCount(folder) {
+        let count = folder.items.length;
+        Object.values(folder.folders).forEach(subfolder => {
+            count += getTotalBookCount(subfolder);
+        });
+        return count;
+    }
+
+    // Get subfolder count
+    function getSubfolderCount(folder) {
+        return Object.keys(folder.folders).length;
+    }
+
+    // Get current folder
+    function getCurrentFolder() {
+        let current = folderStructure;
+        for (let pathPart of currentPath) {
+            if (current.folders[pathPart]) {
+                current = current.folders[pathPart];
+            } else {
+                return folderStructure;
+            }
+        }
+        return current;
+    }
+
+    // Render current folder contents
+    function renderCurrentFolder() {
+        const currentFolder = getCurrentFolder();
+        displayedBooks = [];
+
+        // Add subfolders with total book count
+        const folderNames = Object.keys(currentFolder.folders)
+            .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+
+        folderNames.forEach(folderName => {
+            const folder = currentFolder.folders[folderName];
+            const totalBooks = getTotalBookCount(folder);
+            displayedBooks.push({
+                t: folderName,
+                f: 'Folder',
+                s: `${totalBooks} book${totalBooks !== 1 ? 's' : ''}`,
+                directBooks: folder.items.length,
+                isFolder: true,
+                folderName: folderName
+            });
+        });
+
+        // Add books in current folder
+        displayedBooks = displayedBooks.concat(sortByAlphabet([...currentFolder.items]));
+
         updateBreadcrumb();
-        categoryTitle.style.display = 'none';
-        updateCounter(displayedBooks.length);
+        updateCategoryTitle();
+        updateCounter();
         booksGrid.innerHTML = '';
         renderBooks();
     }
 
-    // عرض محتويات فئة معينة
-    function showCategory(categoryName) {
-        currentCategory = categoryName;
-        displayedBooks = [...(categories[categoryName] || [])];
-        
-        updateBreadcrumb();
-        
-        // عرض عنوان الفئة
-        categoryTitle.style.display = 'block';
-        document.getElementById('categoryName').textContent = categoryName;
-        document.getElementById('categoryCount').textContent = `${displayedBooks.length} كتاب`;
-        
-        updateCounter(displayedBooks.length);
-        booksGrid.innerHTML = '';
-        renderBooks();
-    }
-
-    // تحديث شريط التنقل
+    // Update breadcrumb navigation
     function updateBreadcrumb() {
         breadcrumb.innerHTML = '';
-        
-        // زر الرجوع للرئيسية
+
         const homeBtn = document.createElement('span');
-        homeBtn.className = 'breadcrumb-item' + (currentCategory === null ? ' active' : '');
-        homeBtn.textContent = '📚 الرئيسية';
+        homeBtn.className = 'breadcrumb-item' + (currentPath.length === 0 ? ' active' : '');
+        homeBtn.textContent = '📚 Home';
         homeBtn.style.cursor = 'pointer';
-        
-        // استخدام addEventListener بدلاً من onclick
-        homeBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            showAllCategories();
-            return false;
+
+        homeBtn.addEventListener('click', () => {
+            currentPath = [];
+            window.history.pushState({ path: [] }, '', window.location.pathname);
+            renderCurrentFolder();
         });
-        
+
         breadcrumb.appendChild(homeBtn);
-        
-        if (currentCategory !== null) {
+
+        currentPath.forEach((pathPart, index) => {
             const separator = document.createElement('span');
             separator.className = 'breadcrumb-separator';
             separator.textContent = ' / ';
             breadcrumb.appendChild(separator);
-            
-            const categoryBtn = document.createElement('span');
-            categoryBtn.className = 'breadcrumb-item active';
-            categoryBtn.textContent = currentCategory;
-            breadcrumb.appendChild(categoryBtn);
+
+            const btn = document.createElement('span');
+            btn.className = 'breadcrumb-item' + (index === currentPath.length - 1 ? ' active' : '');
+            btn.textContent = pathPart;
+            btn.style.cursor = 'pointer';
+
+            btn.addEventListener('click', () => {
+                currentPath = currentPath.slice(0, index + 1);
+                window.history.pushState({ path: [...currentPath] }, '', `?path=${encodeURIComponent(currentPath.join('/'))}`);
+                renderCurrentFolder();
+            });
+
+            breadcrumb.appendChild(btn);
+        });
+    }
+
+    // Update category title
+    function updateCategoryTitle() {
+        if (currentPath.length === 0) {
+            categoryTitle.style.display = 'none';
+        } else {
+            categoryTitle.style.display = 'block';
+            document.getElementById('categoryName').textContent = currentPath[currentPath.length - 1];
+            const currentFolder = getCurrentFolder();
+            const totalBooks = getTotalBookCount(currentFolder);
+            const directBooks = currentFolder.items.length;
+            const subfolders = getSubfolderCount(currentFolder);
+            document.getElementById('categoryCount').textContent = `${totalBooks} book${totalBooks !== 1 ? 's' : ''} (${directBooks} direct, ${subfolders} subfolder${subfolders !== 1 ? 's' : ''})`;
         }
     }
 
-    // 2. دالة رسم الكتب
+    // Render books and folders
     function renderBooks(append = false) {
         if (!append) booksGrid.innerHTML = '';
-        
+
         const currentCount = append ? booksGrid.children.length : 0;
         const nextBatch = displayedBooks.slice(currentCount, currentCount + itemsToShow);
 
         if (nextBatch.length === 0 && !append) {
-            booksGrid.innerHTML = '<div class="no-results">لم يتم العثور على أي مجلدات مطابقة.</div>';
+            booksGrid.innerHTML = '<div class="no-results">No items found.</div>';
             return;
         }
 
         const fragment = document.createDocumentFragment();
-        nextBatch.forEach(book => {
+        nextBatch.forEach(item => {
             const card = document.createElement('div');
             card.className = 'book-card';
-            
-            if (book.isCategory) {
-                // بطاقة الفئة
-                const categoryName = book.categoryName;
+
+            if (item.isFolder) {
                 card.innerHTML = `
                     <div class="book-icon">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10z"/></svg>
                     </div>
-                    <h3 class="book-title">${book.t}</h3>
-                    <div class="book-meta"><span class="book-size">${book.s}</span></div>
+                    <h3 class="book-title">${item.t}</h3>
+                    <div class="book-meta"><span class="book-size">${item.s}</span></div>
                 `;
-                
+
                 const btn = document.createElement('button');
                 btn.className = 'download-btn';
-                btn.textContent = 'عرض الكتب';
-                
-                // استخدام addEventListener بدلاً من onclick
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    selectCategory(categoryName);
-                    return false;
+                btn.textContent = 'Open Folder';
+
+                btn.addEventListener('click', () => {
+                    currentPath.push(item.folderName);
+                    window.history.pushState({ path: [...currentPath] }, '', `?path=${encodeURIComponent(currentPath.join('/'))}`);
+                    renderCurrentFolder();
                 });
-                
+
                 card.appendChild(btn);
             } else {
-                // بطاقة الكتاب
-                let path = book.p;
+                let path = item.p;
                 if (path && path.includes('file:///')) {
                     path = path.split('/').pop();
                 }
-                
+
                 card.innerHTML = `
                     <div class="book-icon">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 18H6a1 1 0 0 0 0 2h15v2H6a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2h16v16zM5 16.05c.16-.03.33-.05.5-.05H19V4H5v12.05zM16 9H8V7h8v2zm0 4H8v-2h8v2z"/></svg>
                     </div>
-                    <span class="subfolder-badge">${book.f}</span>
-                    <h3 class="book-title">${book.t}</h3>
-                    <div class="book-meta"><span class="book-size">${book.s}</span></div>
-                    <a class="download-btn" href="${R2_BASE_URL + (path || '')}" download target="_blank">تحميل الكتاب</a>
+                    <h3 class="book-title">${item.t}</h3>
+                    <div class="book-meta"><span class="book-size">${item.s}</span></div>
+                    <a class="download-btn" href="${R2_BASE_URL + (path || '')}" download target="_blank">Download Book</a>
                 `;
             }
             fragment.appendChild(card);
@@ -437,43 +464,73 @@
         booksGrid.appendChild(fragment);
     }
 
-    // دالة اختيار فئة
-    function selectCategory(categoryName) {
-        showCategory(categoryName);
+    // Initialize
+    async function init() {
+        try {
+            const response = await fetch(JSON_URL);
+            if (!response.ok) throw new Error('Failed to load');
+            allBooks = await response.json();
+
+            buildFolderStructure(allBooks);
+
+            const params = new URLSearchParams(window.location.search);
+            const pathFromUrl = params.get('path');
+            if (pathFromUrl) {
+                currentPath = pathFromUrl.split('/').filter(p => p.trim());
+            }
+
+            renderCurrentFolder();
+            setupInfiniteScroll();
+        } catch (error) {
+            booksGrid.innerHTML = `<div class="no-results">❌ Failed to load library: ${error.message}</div>`;
+        }
     }
 
-    // 3. البحث الفوري
+    // Search functionality
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
-        
+
         if (query === "") {
-            // إعادة عرض البيانات الأصلية
-            if (currentCategory === null) {
-                showAllCategories();
-            } else {
-                showCategory(currentCategory);
-            }
+            renderCurrentFolder();
             return;
         }
 
-        // البحث في كل الكتب
-        displayedBooks = allBooks.filter(b => 
-            b.t.toLowerCase().includes(query) || b.f.toLowerCase().includes(query)
+        displayedBooks = allBooks.filter(book =>
+            book.t.toLowerCase().includes(query) ||
+            book.f.toLowerCase().includes(query)
         );
-        
-        statsCounter.innerText = `تم العثور على: ${displayedBooks.length} كتاب`;
+
+        statsCounter.innerText = `Found: ${displayedBooks.length} book${displayedBooks.length !== 1 ? 's' : ''}`;
         categoryTitle.style.display = 'none';
         renderBooks(false);
     });
 
-    // 4. تحديث العداد
-    function updateCounter(count) {
-        if (searchInput.value === "") {
-            statsCounter.innerText = `Smart Book Counter: ${count.toLocaleString()}`;
+// Update counter
+function updateCounter() {
+    if (searchInput.value === "") {
+        const currentFolder = getCurrentFolder();
+        const directBooks = currentFolder.items.length;
+        const subfolders = getSubfolderCount(currentFolder);
+        const totalBooks = getTotalBookCount(currentFolder);
+        
+        if (currentPath.length === 0) {
+            // Count ALL folders recursively, not just top-level
+            function countAllFolders(folder) {
+                let count = getSubfolderCount(folder);
+                Object.values(folder.folders).forEach(subfolder => {
+                    count += countAllFolders(subfolder);
+                });
+                return count;
+            }
+            
+            const allFolders = countAllFolders(folderStructure);
+            statsCounter.innerText = `Smart Book Counter: ${getTotalBookCount(folderStructure).toLocaleString()} books | ${allFolders} folders`;
+        } else {
+            statsCounter.innerText = `Smart Book Counter: ${totalBooks.toLocaleString()} books (${directBooks} direct | ${subfolders} subfolder${subfolders !== 1 ? 's' : ''})`;
         }
     }
+}
 
-    // 5. التمرير اللانهائي
     function setupInfiniteScroll() {
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && booksGrid.children.length < displayedBooks.length) {
@@ -483,30 +540,35 @@
         observer.observe(document.getElementById('loadMoreTrigger'));
     }
 
+    // Handle browser back button
+    window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.path) {
+            currentPath = event.state.path;
+        } else {
+            currentPath = [];
+        }
+        renderCurrentFolder();
+    });
+
     function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => alert("تم النسخ بنجاح!"));
+        navigator.clipboard.writeText(text).then(() => alert("Copied successfully!"));
     }
 
-    // إضافة معالجات الأحداث للأزرار عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', function() {
         const copySolBtn = document.getElementById('copySolBtn');
         const copyBtcBtn = document.getElementById('copyBtcBtn');
-        
+
         if (copySolBtn) {
             copySolBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
                 copyToClipboard('SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F');
-                return false;
             });
         }
-        
+
         if (copyBtcBtn) {
             copyBtcBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
                 copyToClipboard('1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN');
-                return false;
             });
         }
     });
