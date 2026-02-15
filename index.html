@@ -103,31 +103,6 @@
             margin: 5px 0 0 0;
             font-size: 0.95em;
         }
-
-        .sort-btn {
-            background: #1a1f2e;
-            color: #00ff00;
-            padding: 10px 16px;
-            border: 2px solid #00ff00;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.95em;
-            transition: all 0.3s;
-            font-family: 'Courier New', monospace;
-        }
-
-        .sort-btn:hover {
-            background: #00ff00;
-            color: #0a0e14;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-        }
-
-        .sort-btn.active {
-            background: #00ff00;
-            color: #0a0e14;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
-        }
         
         .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
         .book-card { background: #0d1117; border-radius: 4px; padding: 25px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; border: 1px solid #2a3f5f; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; animation: fadeIn 0.4s ease; }
@@ -143,7 +118,7 @@
         .book-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; color: #7f8c8d; font-size: 0.9em; margin-bottom: 20px; }
         .book-size { background: #1a1f2e; padding: 4px 10px; border-radius: 3px; border: 1px solid #2a3f5f; }
         
-        .download-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #0d1117; color: #00ff00; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s; width: 100%; margin-top: auto; border: 2px solid #00ff00; }
+        .download-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #0d1117; color: #00ff00; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s; width: 100%; margin-top: auto; border: 2px solid #00ff00; cursor: pointer; }
         .download-btn:hover { background: #00ff00; color: #0a0e14; box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); }
         
         .onion-link {
@@ -220,14 +195,14 @@
         <div class="onion-link">
             <p>
                 <span>Donate SOL:</span>
-                <span class="copy-link" onclick="copyToClipboard('SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F')">SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F</span>
+                <span class="copy-link" id="copySolBtn">SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F</span>
             </p>
         </div>
 
         <div class="onion-link">
             <p>
                 <span>Donate BTC:</span>
-                <span class="copy-link" onclick="copyToClipboard('1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN')">1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN</span>
+                <span class="copy-link" id="copyBtcBtn">1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN</span>
             </p>
         </div>
     </header>
@@ -237,15 +212,10 @@
         <div class="breadcrumb" id="breadcrumb"></div>
     </div>
 
-    <!-- عنوان الفئة الحالية مع زر الترتيب -->
+    <!-- عنوان الفئة الحالية -->
     <div class="category-title" id="categoryTitle" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-            <div>
-                <h2 id="categoryName"></h2>
-                <p id="categoryCount"></p>
-            </div>
-            <button id="sortBtn" class="sort-btn" onclick="toggleSort()">⬇️ ترتيب أبجدي</button>
-        </div>
+        <h2 id="categoryName"></h2>
+        <p id="categoryCount"></p>
     </div>
 
     <main>
@@ -269,7 +239,6 @@
     let itemsToShow = 40;
     let currentCategory = null;
     let categories = {};
-    let isSorted = false;
     
     const booksGrid = document.getElementById('booksGrid');
     const searchInput = document.getElementById('searchInput');
@@ -288,45 +257,15 @@
         });
     }
 
-    // دالة تبديل الترتيب
-    function toggleSort() {
-        isSorted = !isSorted;
-        const sortBtn = document.getElementById('sortBtn');
-        
-        if (isSorted) {
-            displayedBooks = sortByAlphabet([...displayedBooks]);
-            sortBtn.classList.add('active');
-            sortBtn.textContent = '⬆️ الترتيب الأصلي';
-        } else {
-            // إعادة الترتيب الأصلي
-            if (currentCategory !== null) {
-                displayedBooks = categories[currentCategory] || [];
-            } else {
-                // في حالة البحث
-                if (searchInput.value !== "") {
-                    displayedBooks = allBooks.filter(b => 
-                        b.t.toLowerCase().includes(searchInput.value.toLowerCase()) || 
-                        b.f.toLowerCase().includes(searchInput.value.toLowerCase())
-                    );
-                } else {
-                    showAllCategories();
-                    return;
-                }
-            }
-            sortBtn.classList.remove('active');
-            sortBtn.textContent = '⬇️ ترتيب أبجدي';
-        }
-        
-        booksGrid.innerHTML = '';
-        renderBooks();
-    }
-
     // 1. جلب البيانات وتنظيمها
     async function init() {
         try {
             const response = await fetch(JSON_URL);
             if (!response.ok) throw new Error('فشل التحميل');
             allBooks = await response.json();
+            
+            // ترتيب الكتب أبجدياً من البداية
+            allBooks = sortByAlphabet(allBooks);
             
             // تنظيم الكتب حسب الفئات
             organizeBooks();
@@ -351,6 +290,11 @@
             }
             categories[category].push(book);
         });
+        
+        // ترتيب الكتب داخل كل فئة أبجدياً
+        Object.keys(categories).forEach(category => {
+            categories[category] = sortByAlphabet([...categories[category]]);
+        });
     }
 
     // عرض جميع الفئات
@@ -358,8 +302,12 @@
         currentCategory = null;
         displayedBooks = [];
         
-        // إنشاء كائنات "فئة" لعرضها كبطاقات
-        Object.keys(categories).forEach(categoryName => {
+        // إنشاء كائنات "فئة" لعرضها كبطاقات - مرتبة أبجدياً
+        const sortedCategoryNames = Object.keys(categories).sort((a, b) => 
+            a.localeCompare(b, ['ar', 'en'], { numeric: true })
+        );
+        
+        sortedCategoryNames.forEach(categoryName => {
             displayedBooks.push({
                 t: categoryName,
                 f: 'مجلد',
@@ -379,14 +327,7 @@
     // عرض محتويات فئة معينة
     function showCategory(categoryName) {
         currentCategory = categoryName;
-        displayedBooks = categories[categoryName] || [];
-        isSorted = false;
-        
-        const sortBtn = document.getElementById('sortBtn');
-        if (sortBtn) {
-            sortBtn.classList.remove('active');
-            sortBtn.textContent = '⬇️ ترتيب أبجدي';
-        }
+        displayedBooks = [...(categories[categoryName] || [])];
         
         updateBreadcrumb();
         
@@ -409,7 +350,15 @@
         homeBtn.className = 'breadcrumb-item' + (currentCategory === null ? ' active' : '');
         homeBtn.textContent = '📚 الرئيسية';
         homeBtn.style.cursor = 'pointer';
-        homeBtn.onclick = showAllCategories;
+        
+        // استخدام addEventListener بدلاً من onclick
+        homeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            showAllCategories();
+            return false;
+        });
+        
         breadcrumb.appendChild(homeBtn);
         
         if (currentCategory !== null) {
@@ -444,18 +393,32 @@
             
             if (book.isCategory) {
                 // بطاقة الفئة
+                const categoryName = book.categoryName;
                 card.innerHTML = `
                     <div class="book-icon">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l2 2H20v10z"/></svg>
                     </div>
                     <h3 class="book-title">${book.t}</h3>
                     <div class="book-meta"><span class="book-size">${book.s}</span></div>
-                    <button class="download-btn" onclick="selectCategory('${book.categoryName}')">عرض الكتب</button>
                 `;
+                
+                const btn = document.createElement('button');
+                btn.className = 'download-btn';
+                btn.textContent = 'عرض الكتب';
+                
+                // استخدام addEventListener بدلاً من onclick
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    selectCategory(categoryName);
+                    return false;
+                });
+                
+                card.appendChild(btn);
             } else {
                 // بطاقة الكتاب
                 let path = book.p;
-                if (path.includes('file:///')) {
+                if (path && path.includes('file:///')) {
                     path = path.split('/').pop();
                 }
                 
@@ -466,7 +429,7 @@
                     <span class="subfolder-badge">${book.f}</span>
                     <h3 class="book-title">${book.t}</h3>
                     <div class="book-meta"><span class="book-size">${book.s}</span></div>
-                    <a class="download-btn" href="${R2_BASE_URL + path}" download target="_blank">تحميل الكتاب</a>
+                    <a class="download-btn" href="${R2_BASE_URL + (path || '')}" download target="_blank">تحميل الكتاب</a>
                 `;
             }
             fragment.appendChild(card);
@@ -482,13 +445,6 @@
     // 3. البحث الفوري
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
-        isSorted = false;
-        
-        const sortBtn = document.getElementById('sortBtn');
-        if (sortBtn) {
-            sortBtn.classList.remove('active');
-            sortBtn.textContent = '⬇️ ترتيب أبجدي';
-        }
         
         if (query === "") {
             // إعادة عرض البيانات الأصلية
@@ -530,6 +486,30 @@
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => alert("تم النسخ بنجاح!"));
     }
+
+    // إضافة معالجات الأحداث للأزرار عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        const copySolBtn = document.getElementById('copySolBtn');
+        const copyBtcBtn = document.getElementById('copyBtcBtn');
+        
+        if (copySolBtn) {
+            copySolBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                copyToClipboard('SamJzu73QqdE2Htv7mmn9MUDALypWRoR2H51qon5R9F');
+                return false;
+            });
+        }
+        
+        if (copyBtcBtn) {
+            copyBtcBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                copyToClipboard('1SamUEdkg5qkNPojCuvepTUMjSvp4WiUN');
+                return false;
+            });
+        }
+    });
 
     init();
 </script>
