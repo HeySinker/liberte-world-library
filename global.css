@@ -166,7 +166,7 @@
         /* تحسين للشاشات الصغيرة */
         @media (max-width: 768px) {
             .visitor-counter {
-                top: 10px;
+                bottom: 10px;
                 right: 10px;
                 padding: 8px 12px;
                 gap: 8px;
@@ -562,6 +562,7 @@
             }
 
         }
+
 
 
 
