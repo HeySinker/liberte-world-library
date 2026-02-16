@@ -19,14 +19,21 @@ class VisitorTracker {
         // إضافة الزائر
         await this.addVisitor()
 
-        // heartbeat
-        setInterval(() => this.sendHeartbeat(), 3000)
-        setInterval(() => this.updateCount(), 1000)
+        // heartbeat: تحديث آخر ظهور كل 10 ثواني (بدلاً من 3)
+        // هذا يقلل طلبات PATCH بشكل كبير
+        setInterval(() => this.sendHeartbeat(), 10000)
+
+        // تحديث العداد كل 5 ثواني (بدلاً من 1)
+        // هذا يقلل طلبات HEAD
+        setInterval(() => this.updateCount(), 5000)
+
+        // تنظيف الزوار القدامى مرة واحدة كل دقيقة فقط
+        // هذا يقلل طلبات DELETE بشكل كبير جداً
+        setInterval(() => this.cleanupOldVisitors(), 60000)
 
         window.addEventListener('beforeunload', () => this.removeVisitor())
     }
 
-    // الحصول على IP والبيانات الجغرافية من Supabase Edge Function
     // الحصول على IP والبيانات الجغرافية من Supabase Edge Function
     async getGeoData() {
         try {
@@ -34,7 +41,7 @@ class VisitorTracker {
             const { data, error } = await supabase.functions.invoke('get-visitor-info')
 
             if (error) {
-                // Edge Function not available yet
+                // Edge Function not available yet or blocked
                 throw error
             }
 
@@ -54,7 +61,7 @@ class VisitorTracker {
                 return
             }
         } catch (e) {
-            // Silently fail to basic tracking
+            // Silently fail to basic tracking without console noise
         }
 
         // Fallback: بيانات أساسية فقط
@@ -89,30 +96,42 @@ class VisitorTracker {
             joined_at: new Date().toISOString(),
             last_seen: new Date().toISOString()
         })
+
+        // تحديث أولي سريع
+        this.updateCount()
     }
 
     async sendHeartbeat() {
+        // تحديث فقط (PATCH request)
         await supabase
             .from('visitors')
             .update({ last_seen: new Date().toISOString() })
             .eq('session_id', this.sessionId)
+    }
 
-        // تنظيف الزوار القدامى
-        const tenSecondsAgo = new Date(Date.now() - 10000).toISOString()
+    async cleanupOldVisitors() {
+        // حذف من لم يحدث منذ 30 ثانية (DELETE request)
+        // يتم تنفيذ هذا مرة واحدة فقط في الدقيقة
+        const timeout = new Date(Date.now() - 30000).toISOString()
         await supabase
             .from('visitors')
             .delete()
-            .lt('last_seen', tenSecondsAgo)
+            .lt('last_seen', timeout)
     }
 
     async updateCount() {
-        const { data } = await supabase
+        // نعد فقط الزوار الذين كانوا نشطين في آخر 15 ثانية
+        // هذا يقلل الحاجة للحذف المستمر للحصول على رقم دقيق
+        const activeThreshold = new Date(Date.now() - 15000).toISOString()
+
+        const { count } = await supabase
             .from('visitors')
             .select('*', { count: 'exact', head: true })
+            .gt('last_seen', activeThreshold)
 
-        if (data) {
-            const count = data.length * 3
-            this.displayCount(count)
+        if (count !== null) {
+            const displayCount = count * 3
+            this.displayCount(displayCount)
         }
     }
 
