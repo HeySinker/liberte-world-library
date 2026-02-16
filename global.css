@@ -46,7 +46,7 @@
         /* عداد الزوار الثابت */
         .visitor-counter {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             background:#00000066;
             border: 2px solid #00ff00;
@@ -562,4 +562,5 @@
             }
 
         }
+
 
