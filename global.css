@@ -48,7 +48,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background:#00000066;
+            background: #00000066;
             border: 2px solid #00ff00;
             border-radius: 12px;
             padding: 12px 18px;
@@ -562,7 +562,3 @@
             }
 
         }
-
-
-
-
