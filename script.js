@@ -1,5 +1,5 @@
 const R2_BASE_URL = "https://pub-50bb0a7170f24a0fb33dc91b892ffecc.r2.dev/";
-const JSON_URL = "https://lib.psychicalbeacon.com/books_db.json";
+const JSON_URL = "https://lib.adonisgroup.us/books_db.json";
 
 let allBooks = [];
 let displayedBooks = [];
